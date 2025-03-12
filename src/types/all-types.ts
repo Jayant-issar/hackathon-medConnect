@@ -64,4 +64,5 @@ export interface Emergency {
     additionalInfo?: string;
     status: 'pending' | 'inProgress' | 'resolved';
     createdAt: string;
+    createdBy: string;
 }
