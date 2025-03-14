@@ -30,16 +30,17 @@ export function AppointmentModal({ isOpen, onClose }: AppointmentModalProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 "
           onClick={onClose}
         >
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="bg-white rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative"
+            className="bg-white rounded-2xl p-8 max-w-2xl w-full max-h-[90vh]  relative "
             onClick={e => e.stopPropagation()}
           >
+            
             <button
               onClick={onClose}
               className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
@@ -50,8 +51,7 @@ export function AppointmentModal({ isOpen, onClose }: AppointmentModalProps) {
             <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Schedule Appointment
             </h2>
-            
-            <AppointmentForm onSubmit={handleSubmit} isSubmitting={isScheduling} />
+              <AppointmentForm onSubmit={handleSubmit} isSubmitting={isScheduling} />
           </motion.div>
         </motion.div>
       )}
