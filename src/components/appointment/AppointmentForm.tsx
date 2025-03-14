@@ -37,7 +37,8 @@ export function AppointmentForm({ onSubmit, isSubmitting }: AppointmentFormProps
   ];
 
   return (
-    <div className="space-y-4">
+    <div className=" grid grid-cols-2 gap-4 gap-x-4">
+
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700">Select Hospital</label>
         <select 
