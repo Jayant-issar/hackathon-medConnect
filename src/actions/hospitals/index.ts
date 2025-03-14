@@ -5,7 +5,7 @@ export async function getHospitals() {
     
     
     try {
-        const response = await axios.get(`${API_URL}/hospital/all`);
+        const response = await axios.get(`${API_URL}/hospitals`);
         if (response.status === 200) {
             return response.data;
         }
