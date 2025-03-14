@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, AlertTriangle, Clock, RefreshCw } from 'lucide-react';
 import { Emergency } from '@/types/all-types';
-import { getUserEmergencyRequests } from '@/actions/seek emergency';
+import { getUserEmergencyRequests } from '@/actions/seekEmergency';
 import { EmergencyRequestList } from '@/components/seek emergency/EmergencyRequestList';
 import { EmergencyRequestModal } from '@/components/seek emergency/EmergencyRequestModal';
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useQueryClient } from '@tanstack/react-query';
-import { createEmergencyRequest } from '@/actions/seek emergency';
+import { createEmergencyRequest } from '@/actions/seekEmergency';
 import { useUser } from '@clerk/clerk-react';
+import { useOnboarding } from '@/hooks/useOnboarding';
 
 export default function EmergencyRequests() {
   const [emergencies, setEmergencies] = useState<Emergency[]>([]);
@@ -18,7 +19,7 @@ export default function EmergencyRequests() {
   const queryClient = useQueryClient();
   const { user } = useUser();
   const userEmail = user?.primaryEmailAddress?.emailAddress;
-
+  const {data:onboardingData}  = useOnboarding();
   useEffect(() => {
     fetchEmergencyRequests();
   }, []);
@@ -50,7 +51,7 @@ export default function EmergencyRequests() {
       };
       
       // Create the emergency request
-      const newEmergency = await createEmergencyRequest(emergencyWithEmail);
+      const newEmergency = await createEmergencyRequest({name:emergencyWithEmail.bloodType+" blood type needed",contactName:emergencyWithEmail.contactName, contactPhone:emergencyWithEmail.contactPhone,location:emergencyWithEmail.location, urgencyLevel:emergencyWithEmail.urgency,hospitalName:emergencyWithEmail.hospitalName, description :emergencyWithEmail.additionalInfo as string,userId:onboardingData.data.user.id});
       
       // Update local state
       setEmergencies((prev) => [newEmergency, ...prev]);
