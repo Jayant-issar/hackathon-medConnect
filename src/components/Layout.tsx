@@ -4,6 +4,7 @@ import { Home, Droplet, Hospital, Menu, HeartPulse, Ambulance, HeartIcon } from 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { UserButton, useUser } from "@clerk/clerk-react";
+import { useOnboarding } from '../hooks/useOnboarding';
 
 interface NavItem {
   icon: React.ElementType;
@@ -22,31 +23,53 @@ const navItems: NavItem[] = [
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
-  const user = useUser();
+  const { user, isSignedIn } = useUser();
   const location = useLocation();
   
   const isLandingPage = location.pathname === "/";
   const isAuthPage = ['/login', '/register'].includes(location.pathname);
   const shouldShowSidebar = !isLandingPage && !isAuthPage;
 
+  const {
+    data: onboardingData,
+    isLoading: onboardingLoading,
+    isError: onboardingError,
+  } = useOnboarding();
+
   useEffect(() => {
     const checkAuth = async () => {
       const publicRoutes = ['/login', '/register', '/'];
       const currentPath = window.location.pathname;
       
-      if (user.isSignedIn && publicRoutes.includes(currentPath)) {
+      if (isSignedIn && publicRoutes.includes(currentPath)) {
         if (currentPath !== "/") {
           navigate('/dashboard');
         }
       }
       
-      if (!user.isSignedIn && !publicRoutes.includes(currentPath)) {
+      if (!isSignedIn && !publicRoutes.includes(currentPath)) {
+        navigate('/login');
+      }
+      
+      if (onboardingError) {
+        console.error("Onboarding failed:", onboardingError);
+        navigate('/');
+        return;
+      }
+      
+      if (isSignedIn && !onboardingLoading && !onboardingError) {
+        if (publicRoutes.includes(currentPath)) {
+          if (currentPath !== "/") {
+            navigate('/dashboard');
+          }
+        }
+      } else if (!isSignedIn && !publicRoutes.includes(currentPath)) {
         navigate('/login');
       }
     };
     
     checkAuth();
-  }, [user.isSignedIn, navigate]);
+  }, [isSignedIn, navigate, onboardingError, onboardingLoading]);
 
   if (isLandingPage) {
     return <div className="min-h-screen bg-medical-light">{children}</div>;
