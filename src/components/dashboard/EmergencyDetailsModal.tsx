@@ -1,4 +1,3 @@
-import React from 'react';
 import { X, AlertTriangle, MapPin, Phone, Clock, User, CalendarClock } from 'lucide-react';
 import { Emergency } from '@/types/all-types';
 
@@ -49,7 +48,7 @@ export function EmergencyDetailsModal({ emergency, isOpen, onClose }: EmergencyD
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-lg shadow-xl  max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           <h3 className="text-lg font-medium text-gray-900">Emergency Details</h3>
