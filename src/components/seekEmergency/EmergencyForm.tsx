@@ -13,21 +13,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
 interface EmergencyFormProps {
-  onSubmit: (emergencyData: Omit<Emergency, "id" | "status">) => void;
+  onSubmit: (emergencyData: Omit<Emergency, "userId"| "id">) => void;
   onCancel: () => void;
 }
 
 export function EmergencyForm({ onSubmit, onCancel }: EmergencyFormProps) {
-  const [formData, setFormData] = useState<Omit<Emergency, "id" | "status">>({
-    bloodType: "",
+  const [formData, setFormData] = useState<Omit<Emergency, "userId"| "id">>({
+    name: "",
     location: "",
     hospitalName: "",
     contactName: "",
     contactPhone: "",
-    urgency: "medium",
-    additionalInfo: "",
-    createdAt: "",
-    createdBy: "",
+    urgencyLevel: "medium",
+    description: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -39,7 +37,6 @@ export function EmergencyForm({ onSubmit, onCancel }: EmergencyFormProps) {
     e.preventDefault();
     onSubmit({
       ...formData,
-      createdAt: new Date().toISOString(),
     });
   };
 
@@ -56,7 +53,7 @@ export function EmergencyForm({ onSubmit, onCancel }: EmergencyFormProps) {
           <Label htmlFor="bloodType">Blood Type Needed</Label>
           <Select
             name="bloodType"
-            value={formData.bloodType}
+            value={formData.name}
             onValueChange={(value) => setFormData((prev) => ({ ...prev, bloodType: value }))}
             required
           >
@@ -141,7 +138,7 @@ export function EmergencyForm({ onSubmit, onCancel }: EmergencyFormProps) {
           <Label htmlFor="urgency">Urgency Level</Label>
           <Select
             name="urgency"
-            value={formData.urgency}
+            value={formData.urgencyLevel}
             onValueChange={(value) =>
               setFormData((prev) => ({ ...prev, urgency: value as "low" | "medium" | "high" }))
             }
@@ -165,7 +162,7 @@ export function EmergencyForm({ onSubmit, onCancel }: EmergencyFormProps) {
         <Textarea
           id="additionalInfo"
           name="additionalInfo"
-          value={formData.additionalInfo}
+          value={formData.description}
           onChange={handleChange}
           placeholder="Enter any additional information"
           rows={3}

@@ -10,27 +10,29 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useEmergencyAlerts } from '@/hooks/useEmergencyAlerts';
+import {  useUser } from '@clerk/clerk-react';
 
 interface EmergencyRequestListProps {
   emergencies: Emergency[];
 }
 
-export function EmergencyRequestList({ emergencies }: EmergencyRequestListProps) {
-  const getStatusColor = (status: Emergency['status']) => {
-    switch (status) {
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'inProgress':
-        return 'bg-blue-100 text-blue-800';
-      case 'resolved':
-        return 'bg-green-100 text-green-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
+export function EmergencyRequestList() {
+  // const getStatusColor = (status: Emergency['status']) => {
+  //   switch (status) {
+  //     case 'pending':
+  //       return 'bg-yellow-100 text-yellow-800';
+  //     case 'inProgress':
+  //       return 'bg-blue-100 text-blue-800';
+  //     case 'resolved':
+  //       return 'bg-green-100 text-green-800';
+  //     default:
+  //       return 'bg-gray-100 text-gray-800';
+  //   }
+  // };
 
-  const getUrgencyColor = (urgency: Emergency['urgency']) => {
-    switch (urgency) {
+  const geturgencyLevelColor = (urgencyLevel: Emergency['urgencyLevel']) => {
+    switch (urgencyLevel) {
       case 'high':
         return 'bg-red-100 text-red-800';
       case 'medium':
@@ -41,32 +43,35 @@ export function EmergencyRequestList({ emergencies }: EmergencyRequestListProps)
         return 'bg-gray-100 text-gray-800';
     }
   };
+  const {user} = useUser();
+  const userEmail = user?.primaryEmailAddress?.emailAddress;
+  const { allEmergencies, myEmergencies, isLoading } = useEmergencyAlerts();
 
   return (
     <div className="space-y-6">
-      {emergencies.length === 0 ? (
+      {myEmergencies.length === 0 ? (
         <Card>
           <CardContent className="pt-6">
             <p className="text-center text-gray-500">No emergency requests found.</p>
           </CardContent>
         </Card>
       ) : (
-        emergencies.map((emergency) => (
+        myEmergencies.map((emergency) => (
           <Card key={emergency.id}>
             <CardHeader>
               <div className="flex justify-between items-start">
                 <div>
                   <CardTitle className="text-xl font-semibold">
-                    {emergency.bloodType} Blood Needed
+                    {emergency.name} Blood Needed
                   </CardTitle>
                   <CardDescription>{emergency.hospitalName}</CardDescription>
                 </div>
                 <div className="flex gap-2">
-                  <Badge variant="secondary" className={getStatusColor(emergency.status)}>
+                  {/* <Badge variant="secondary" className={getStatusColor(emergency.status)}>
                     {emergency.status}
-                  </Badge>
-                  <Badge variant="secondary" className={getUrgencyColor(emergency.urgency)}>
-                    {emergency.urgency} urgency
+                  </Badge> */}
+                  <Badge variant="secondary" className={geturgencyLevelColor(emergency.urgencyLevel)}>
+                    {emergency.urgencyLevel} urgencyLevel
                   </Badge>
                 </div>
               </div>
@@ -79,7 +84,7 @@ export function EmergencyRequestList({ emergencies }: EmergencyRequestListProps)
                 </div>
                 <div className="flex items-center">
                   <Clock className="h-5 w-5 text-gray-400 mr-2" />
-                  <span>{formatDate(emergency.createdAt)}</span>
+                  {/* <span>{formatDate(emergency.createdAt)}</span> */}
                 </div>
                 <div className="flex items-center">
                   <User className="h-5 w-5 text-gray-400 mr-2" />
@@ -90,10 +95,10 @@ export function EmergencyRequestList({ emergencies }: EmergencyRequestListProps)
                   <span>{emergency.contactPhone}</span>
                 </div>
               </div>
-              {emergency.additionalInfo && (
+              {emergency.description && (
                 <div className="mt-4">
                   <h4 className="font-medium text-sm text-gray-700 mb-1">Additional Information:</h4>
-                  <p className="text-sm text-gray-600">{emergency.additionalInfo}</p>
+                  <p className="text-sm text-gray-600">{emergency.description}</p>
                 </div>
               )}
             </CardContent>

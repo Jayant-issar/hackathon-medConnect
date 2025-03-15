@@ -1,7 +1,7 @@
 import React from 'react';
 import { X, AlertTriangle, MapPin, Phone, Clock, User, CalendarClock } from 'lucide-react';
 import { Emergency } from '@/types/all-types';
-import { formatDate } from '@/lib/utils';
+
 
 interface EmergencyDetailsModalProps {
   emergency: Emergency | null;
@@ -64,22 +64,22 @@ export function EmergencyDetailsModal({ emergency, isOpen, onClose }: EmergencyD
         {/* Content */}
         <div className="p-5">
           {/* Urgency Badge */}
-          <div className={`mb-5 px-3 py-2 rounded-md ${getUrgencyColor(emergency.urgency)}`}>
+          <div className={`mb-5 px-3 py-2 rounded-md ${getUrgencyColor(emergency.urgencyLevel)}`}>
             <div className="flex items-center">
               <AlertTriangle className="h-5 w-5 mr-2" />
-              <span className="font-medium">{getUrgencyLabel(emergency.urgency)}</span>
+              <span className="font-medium">{getUrgencyLabel(emergency.urgencyLevel)}</span>
             </div>
           </div>
 
           {/* Status and Blood Type */}
           <div className="flex justify-between items-center mb-5">
-            <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(emergency.status)}`}>
+            {/* <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(emergency.status)}`}>
               {getStatusLabel(emergency.status)}
-            </span>
+            </span> */}
 
-            {emergency.bloodType && (
+            {emergency.name && (
               <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                Blood Type: {emergency.bloodType}
+                Emergency: {emergency.name}
               </span>
             )}
           </div>
@@ -117,11 +117,11 @@ export function EmergencyDetailsModal({ emergency, isOpen, onClose }: EmergencyD
           </div>
 
           {/* Additional Info */}
-          {emergency.additionalInfo && (
+          {emergency.description && (
             <div className="mb-5">
               <h4 className="text-sm font-semibold text-gray-500 uppercase mb-2">Additional Information</h4>
               <div className="p-3 bg-gray-50 rounded-md">
-                <p className="text-gray-700">{emergency.additionalInfo}</p>
+                <p className="text-gray-700">{emergency.description}</p>
               </div>
             </div>
           )}
@@ -130,27 +130,25 @@ export function EmergencyDetailsModal({ emergency, isOpen, onClose }: EmergencyD
           <div className="border-t pt-4 mt-4">
             <div className="flex items-center text-sm text-gray-500">
               <CalendarClock className="h-4 w-4 mr-1" />
-              <span>Created: {new Date(emergency.createdAt).toLocaleString()}</span>
+              {/* <span>Created: {new Date(emergency.createdAt).toLocaleString()}</span> */}
             </div>
-            {emergency.createdBy && (
+            {/* {emergency.createdBy && (
               <div className="flex items-center text-sm text-gray-500 mt-1">
                 <User className="h-4 w-4 mr-1" />
                 <span>By: {emergency.createdBy}</span>
               </div>
-            )}
+            )} */}
           </div>
         </div>
 
         {/* Footer */}
         <div className="px-4 py-3 bg-gray-50 border-t rounded-b-lg">
-          {emergency.status !== 'resolved' && (
             <a 
               href={`tel:${emergency.contactPhone}`}
               className="block w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 text-center"
             >
               Contact Now
             </a>
-          )}
         </div>
       </div>
     </div>

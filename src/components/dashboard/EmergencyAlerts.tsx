@@ -4,17 +4,17 @@ import { Emergency } from '@/types/all-types';
 import { useEmergencyAlerts } from '@/hooks/useEmergencyAlerts';
 import { cn } from '@/lib/utils';
 import { EmergencyDetailsModal } from './EmergencyDetailsModal';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertTriangle } from 'lucide-react';
 
-interface EmergencyAlertsProps {
-  userEmail?: string;
-}
-
-export function EmergencyAlerts({ userEmail }: EmergencyAlertsProps) {
+export function EmergencyAlerts() {
   const [activeTab, setActiveTab] = useState<'all' | 'my'>('all');
   const [selectedEmergency, setSelectedEmergency] = useState<Emergency | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { allEmergencies, myEmergencies, isLoading } = useEmergencyAlerts(userEmail);
+  const {myEmergencies, allEmergencies,addEmergency,refetch,isLoading,isError} = useEmergencyAlerts();
   
+  
+
   const emergencies = activeTab === 'all' ? allEmergencies : myEmergencies;
 
   // Function to determine background color based on urgency
@@ -55,7 +55,17 @@ export function EmergencyAlerts({ userEmail }: EmergencyAlertsProps) {
   };
 
   return (
-    <>
+    <div>
+      {isError && (
+        <Alert variant="destructive">
+          <AlertTriangle />
+          <AlertTitle>Error fetching emergencies</AlertTitle>
+          <AlertDescription>
+            {"Something went wrong while fetching emergency alerts."}
+          </AlertDescription>
+        </Alert>
+      )}
+
       <div className="bg-white shadow rounded-lg">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
@@ -93,9 +103,9 @@ export function EmergencyAlerts({ userEmail }: EmergencyAlertsProps) {
                 <div className="animate-pulse h-5 w-5 bg-gray-300 rounded-full mx-auto"></div>
                 <p className="text-sm text-gray-500 mt-2">Loading alerts...</p>
               </div>
-            ) : emergencies.length > 0 ? (
+            ) :  emergencies && emergencies.length > 0 ? (
               emergencies.slice(0, 10).map((emergency, index) => {
-                const styles = getUrgencyStyles(emergency.urgency);
+                const styles = getUrgencyStyles(emergency.urgencyLevel);
                 
                 return (
                   <div 
@@ -109,7 +119,7 @@ export function EmergencyAlerts({ userEmail }: EmergencyAlertsProps) {
                       </div>
                       <div className="ml-3">
                         <h4 className={`text-sm font-medium ${styles.title}`}>
-                          {emergency.bloodType ? `Urgent: ${emergency.bloodType} Blood Required` : 'Emergency Alert'}
+                          {emergency.name ? `Urgent: ${emergency.name} Blood Required` : 'Emergency Alert'}
                         </h4>
                         <div className={`mt-1 text-sm ${styles.text}`}>
                           {emergency.hospitalName} needs assistance. Contact {emergency.contactPhone} if you can help.
@@ -134,6 +144,6 @@ export function EmergencyAlerts({ userEmail }: EmergencyAlertsProps) {
         isOpen={isModalOpen}
         onClose={closeModal}
       />
-    </>
+    </div>
   );
 } 
