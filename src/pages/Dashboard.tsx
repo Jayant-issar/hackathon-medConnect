@@ -79,8 +79,7 @@ const nearbyFacilities = [
 function Dashboard() {
   const [isAppointmentModalOpen, setIsAppointmentModalOpen] = React.useState(false);
   const { appointments, isLoading } = useAppointments();
-  const { user } = useUser();
-  const userEmail = user?.primaryEmailAddress?.emailAddress;
+  
 
   return (
     <div className="min-h-screen bg-gray-50 flex -ml-64 ">
@@ -273,7 +272,7 @@ function Dashboard() {
             <div className="space-y-6">
               
               {/* Emergency Alerts */}
-              <EmergencyAlerts userEmail={userEmail} />
+              <EmergencyAlerts />
 
               {/* Upcoming Appointments */}
               <div className="bg-white shadow rounded-lg">
