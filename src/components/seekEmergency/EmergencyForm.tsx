@@ -50,27 +50,15 @@ export function EmergencyForm({ onSubmit, onCancel }: EmergencyFormProps) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Blood Type */}
         <div>
-          <Label htmlFor="bloodType">Blood Type Needed</Label>
-          <Select
-            name="bloodType"
+        <Label htmlFor="bloodType">Emergency</Label>
+          <Input
+            type="text"
+            id="name"
             value={formData.name}
-            onValueChange={(value) => setFormData((prev) => ({ ...prev, bloodType: value }))}
-            required
-          >
-            <SelectTrigger id="bloodType" className="mt-2">
-              <SelectValue placeholder="Select blood type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="A+">A+</SelectItem>
-              <SelectItem value="A-">A-</SelectItem>
-              <SelectItem value="B+">B+</SelectItem>
-              <SelectItem value="B-">B-</SelectItem>
-              <SelectItem value="AB+">AB+</SelectItem>
-              <SelectItem value="AB-">AB-</SelectItem>
-              <SelectItem value="O+">O+</SelectItem>
-              <SelectItem value="O-">O-</SelectItem>
-            </SelectContent>
-          </Select>
+            placeholder="Enter your emergency"
+            onChange={(e)=>setFormData({...formData, name: e.target.value})}
+            className="mt-2x`"
+          />
         </div>
 
         {/* Location */}
@@ -163,7 +151,7 @@ export function EmergencyForm({ onSubmit, onCancel }: EmergencyFormProps) {
           id="additionalInfo"
           name="additionalInfo"
           value={formData.description}
-          onChange={handleChange}
+          onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
           placeholder="Enter any additional information"
           rows={3}
           className="mt-2"
