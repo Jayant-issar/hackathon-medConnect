@@ -57,7 +57,7 @@ export function EmergencyForm({ onSubmit, onCancel }: EmergencyFormProps) {
             value={formData.name}
             placeholder="Enter your emergency"
             onChange={(e)=>setFormData({...formData, name: e.target.value})}
-            className="mt-2x`"
+            className="mt-2"
           />
         </div>
 
