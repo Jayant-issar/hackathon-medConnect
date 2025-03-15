@@ -12,10 +12,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { useEmergencyAlerts } from '@/hooks/useEmergencyAlerts';
 import {  useUser } from '@clerk/clerk-react';
+import { useOnboarding } from '@/hooks/useOnboarding';
 
-interface EmergencyRequestListProps {
-  emergencies: Emergency[];
-}
+
 
 export function EmergencyRequestList() {
   // const getStatusColor = (status: Emergency['status']) => {
@@ -43,10 +42,11 @@ export function EmergencyRequestList() {
         return 'bg-gray-100 text-gray-800';
     }
   };
-  const {user} = useUser();
-  const userEmail = user?.primaryEmailAddress?.emailAddress;
-  const { allEmergencies, myEmergencies, isLoading } = useEmergencyAlerts();
+  const {data:onboardingData} = useOnboarding();
+  const { allEmergencies, isLoading } = useEmergencyAlerts();
+  const userId = onboardingData?.data?.user?.id;
 
+  const myEmergencies = userId? allEmergencies.filter((emergency)=> emergency.userId = userId) : [];
   return (
     <div className="space-y-6">
       {myEmergencies.length === 0 ? (
