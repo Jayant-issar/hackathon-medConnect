@@ -6,13 +6,19 @@ import { cn } from '@/lib/utils';
 import { EmergencyDetailsModal } from './EmergencyDetailsModal';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertTriangle } from 'lucide-react';
+import { useOnboarding } from '@/hooks/useOnboarding';
+import { json } from 'stream/consumers';
 
 export function EmergencyAlerts() {
+  const {isError, isLoading, allEmergencies} = useEmergencyAlerts();
   const [activeTab, setActiveTab] = useState<'all' | 'my'>('all');
+  const {data:onboardingData} = useOnboarding();
   const [selectedEmergency, setSelectedEmergency] = useState<Emergency | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const {myEmergencies, allEmergencies,addEmergency,refetch,isLoading,isError} = useEmergencyAlerts();
+  let userId
+  userId = onboardingData?.data?.user?.id;
   
+  const myEmergencies = userId ? allEmergencies.filter(emergency => emergency.userId === userId) : [];
   
 
   const emergencies = activeTab === 'all' ? allEmergencies : myEmergencies;
@@ -53,6 +59,8 @@ export function EmergencyAlerts() {
     setIsModalOpen(false);
     setSelectedEmergency(null);
   };
+  
+  
 
   return (
     <div>
@@ -65,6 +73,7 @@ export function EmergencyAlerts() {
           </AlertDescription>
         </Alert>
       )}
+
 
       <div className="bg-white shadow rounded-lg">
         <div className="p-6">
