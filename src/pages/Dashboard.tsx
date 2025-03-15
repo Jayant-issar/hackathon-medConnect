@@ -29,10 +29,9 @@ import { AppointmentButton } from '@/components/appointment/AppointmentButton';
 import { AppointmentModal } from '@/components/appointment/AppointmentModal';
 import { useAppointments } from '@/hooks/useAppointments';
 import { format } from 'date-fns';
-import { useEmergencyAlerts } from '@/hooks/useEmergencyAlerts';
 import { EmergencyAlerts } from '@/components/dashboard/EmergencyAlerts';
-import { useUser } from '@clerk/clerk-react';
 import { NotificationsDropdown } from '@/components/dashboard/NotificationsDropdown';
+import { useNavigate } from 'react-router-dom';
 
 const nearbyFacilities = [
   {
@@ -79,8 +78,7 @@ const nearbyFacilities = [
 function Dashboard() {
   const [isAppointmentModalOpen, setIsAppointmentModalOpen] = React.useState(false);
   const { appointments, isLoading } = useAppointments();
-  
-
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-gray-50 flex -ml-64 ">
       
@@ -102,6 +100,7 @@ function Dashboard() {
                   <NotificationsDropdown />
                 </div>
                 <UserButton/>
+
               </div>
             </div>
           </div>
@@ -128,7 +127,7 @@ function Dashboard() {
               <AppointmentButton onClick={() => setIsAppointmentModalOpen(true)} />
               <button className="flex items-center p-4 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
                 <Droplet className="h-6 w-6 text-red-500 mr-3" />
-                <span className="text-sm font-medium text-red-700">Donate Blood</span>
+                <span onClick={() => navigate('/donation-drives')}  className="text-sm font-medium text-red-700">Donate Blood</span>
               </button>
               <button className="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
                 <Phone className="h-6 w-6 text-green-500 mr-3" />
@@ -136,7 +135,7 @@ function Dashboard() {
               </button>
               <button className="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
                 <Building2 className="h-6 w-6 text-purple-500 mr-3" />
-                <span className="text-sm font-medium text-purple-700">Find Hospital</span>
+                <span className="text-sm font-medium text-purple-700" onClick={() => navigate('/hospitals')}>Find Hospital</span>
               </button>
             </div>
           </div>
