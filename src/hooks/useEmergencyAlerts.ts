@@ -6,7 +6,7 @@ import { useOnboarding } from "./useOnboarding";
 export function useEmergencyAlerts() {
     const queryClient = useQueryClient();
     const {data:onboardingData} = useOnboarding();
-    const { data: emergencies = [], isLoading, isError, error,refetch } = useQuery({ // Destructure isError and error
+    const { data: emergencies = [], isLoading, isError, error,refetch } = useQuery({ 
         queryKey: ["emergencies"],
         queryFn: async () => { // Wrap getUserEmergencyRequests in an async function
             const emergencyData = await getUserEmergencyRequests();
@@ -23,15 +23,15 @@ export function useEmergencyAlerts() {
         // );
     };
 
-    const getMyEmergencies = () => {
-        console.log(onboardingData.data.user.id);
-        return emergencies.filter(emergency =>
-            emergency.userId === onboardingData.data.user.id 
-        )
-        // .sort((a, b) =>
-        //     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        // );
-    };
+    // const getMyEmergencies = () => {
+    //     console.log(onboardingData.data.user.id);
+    //     return emergencies.filter(emergency =>
+    //         emergency.userId === onboardingData.data.user.id 
+    //     )
+    //     // .sort((a, b) =>
+    //     //     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    //     // );
+    // };
 
     
     const addEmergency = (newEmergency: Emergency) => {
@@ -43,7 +43,6 @@ export function useEmergencyAlerts() {
 
     return {
         allEmergencies: getAllEmergencies(),
-        myEmergencies: getMyEmergencies(),
         isLoading,
         isError, // Expose isError
         error,     // Expose error
