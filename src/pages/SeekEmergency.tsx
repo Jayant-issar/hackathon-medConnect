@@ -2,45 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { Plus, AlertTriangle, Clock, RefreshCw } from 'lucide-react';
 import { Emergency } from '@/types/all-types';
 import { getUserEmergencyRequests } from '@/actions/seekEmergency';
-import { EmergencyRequestList } from '@/components/seek emergency/EmergencyRequestList';
-import { EmergencyRequestModal } from '@/components/seek emergency/EmergencyRequestModal';
+import { EmergencyRequestList } from '@/components/seekEmergency/EmergencyRequestList';
+import { EmergencyRequestModal } from '@/components/seekEmergency/EmergencyRequestModal';
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useQueryClient } from '@tanstack/react-query';
 import { createEmergencyRequest } from '@/actions/seekEmergency';
 import { useUser } from '@clerk/clerk-react';
 import { useOnboarding } from '@/hooks/useOnboarding';
+import { useEmergencyAlerts } from '@/hooks/useEmergencyAlerts';
 
 export default function EmergencyRequests() {
-  const [emergencies, setEmergencies] = useState<Emergency[]>([]);
+  const { allEmergencies,addEmergency,refetch,isLoading} = useEmergencyAlerts();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  
   const [refreshing, setRefreshing] = useState(false);
   const queryClient = useQueryClient();
   const { user } = useUser();
   const userEmail = user?.primaryEmailAddress?.emailAddress;
   const {data:onboardingData}  = useOnboarding();
-  useEffect(() => {
-    fetchEmergencyRequests();
-  }, []);
 
-  const fetchEmergencyRequests = async () => {
-    setIsLoading(true);
-    try {
-      const requests = await getUserEmergencyRequests();
-      setEmergencies(requests);
-    } catch (error) {
-      console.error('Error fetching emergency requests:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    await fetchEmergencyRequests();
-    setRefreshing(false);
-  };
+  console.log(onboardingData);
+  
+  
 
   const handleNewRequest = async (newEmergencyData: Omit<Emergency, "id" | "status" | "createdAt">) => {
     try {
@@ -51,10 +35,10 @@ export default function EmergencyRequests() {
       };
       
       // Create the emergency request
-      const newEmergency = await createEmergencyRequest({name:emergencyWithEmail.bloodType+" blood type needed",contactName:emergencyWithEmail.contactName, contactPhone:emergencyWithEmail.contactPhone,location:emergencyWithEmail.location, urgencyLevel:emergencyWithEmail.urgency,hospitalName:emergencyWithEmail.hospitalName, description :emergencyWithEmail.additionalInfo as string,userId:onboardingData.data.user.id});
+      const newEmergency = await createEmergencyRequest({name:emergencyWithEmail.name,contactName:emergencyWithEmail.contactName, contactPhone:emergencyWithEmail.contactPhone,location:emergencyWithEmail.location, urgencyLevel:emergencyWithEmail.urgencyLevel,hospitalName:emergencyWithEmail.hospitalName, description :emergencyWithEmail.description,userId:onboardingData.data.user.id});
       
-      // Update local state
-      setEmergencies((prev) => [newEmergency, ...prev]);
+      // optimistic update
+      addEmergency(newEmergency);
       
       // Invalidate the emergencies query to refresh the dashboard
       queryClient.invalidateQueries({ queryKey: ['emergencies'] });
@@ -105,7 +89,7 @@ export default function EmergencyRequests() {
             <Button 
               variant="outline" 
               size="sm" 
-              onClick={handleRefresh}
+              onClick={()=>refetch()}
               disabled={refreshing || isLoading}
               className="flex items-center"
             >
@@ -128,8 +112,9 @@ export default function EmergencyRequests() {
                 </div>
               ))}
             </div>
-          ) : emergencies.length > 0 ? (
-            <EmergencyRequestList emergencies={emergencies} />
+          ) : allEmergencies.length > 0 ? (
+            <EmergencyRequestList  /> 
+            // null
           ) : (
             <div className="text-center py-12 border border-dashed border-gray-200 rounded-lg">
               <Clock className="h-12 w-12 text-gray-300 mx-auto mb-3" />
