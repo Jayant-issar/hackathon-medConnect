@@ -23,16 +23,6 @@ export function useEmergencyAlerts() {
         // );
     };
 
-    // const getMyEmergencies = () => {
-    //     console.log(onboardingData.data.user.id);
-    //     return emergencies.filter(emergency =>
-    //         emergency.userId === onboardingData.data.user.id 
-    //     )
-    //     // .sort((a, b) =>
-    //     //     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    //     // );
-    // };
-
     
     const addEmergency = (newEmergency: Emergency) => {
         queryClient.setQueryData(["emergencies"], (old: Emergency[] = []) => [

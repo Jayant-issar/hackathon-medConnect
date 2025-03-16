@@ -8,6 +8,7 @@ export async function getUserEmergencyRequests(): Promise<Emergency[] | null> {
     try {
         const response = await axios.get(`${API_URL}/emergencies`, {
             timeout: API_TIMEOUT,
+            
         });
 
         if (response.status === 200) {
@@ -26,7 +27,7 @@ export async function getUserEmergencyRequests(): Promise<Emergency[] | null> {
     }
 }
 
-export async function createEmergencyRequest(emergency: Omit<Emergency, "id" | "status" | "createdAt" | "createdBy" | "bloodType" | "urgency" | "additionalInfo"> & { userId: string,name: string, urgencyLevel: string,description: string }): Promise<Emergency | null> {
+export async function createEmergencyRequest(emergency: Omit<Emergency, "id" >, token: string): Promise<Emergency | null> {
     try {
         const response = await axios({
             method: "POST",
@@ -35,11 +36,12 @@ export async function createEmergencyRequest(emergency: Omit<Emergency, "id" | "
             timeout: API_TIMEOUT,
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
             },
         });
 
         if (response.status === 201) {
-            return response.data as Emergency; // Assuming the API returns the created emergency
+            return response.data as Emergency; 
         } else {
             console.error("Failed to create emergency request, status code:", response.status);
             return null;

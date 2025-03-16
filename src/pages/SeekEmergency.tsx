@@ -8,9 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useQueryClient } from '@tanstack/react-query';
 import { createEmergencyRequest } from '@/actions/seekEmergency';
-import { useUser } from '@clerk/clerk-react';
+import { useUser,useAuth } from '@clerk/clerk-react';
 import { useOnboarding } from '@/hooks/useOnboarding';
 import { useEmergencyAlerts } from '@/hooks/useEmergencyAlerts';
+import { toast } from 'sonner';
 
 export default function EmergencyRequests() {
   const { allEmergencies,addEmergency,refetch,isLoading} = useEmergencyAlerts();
@@ -19,9 +20,9 @@ export default function EmergencyRequests() {
   const [refreshing, setRefreshing] = useState(false);
   const queryClient = useQueryClient();
   const { user } = useUser();
+  const {getToken} = useAuth();
   const userEmail = user?.primaryEmailAddress?.emailAddress;
   const {data:onboardingData}  = useOnboarding();
-
   console.log(onboardingData);
   
   
@@ -33,17 +34,23 @@ export default function EmergencyRequests() {
         ...newEmergencyData,
         createdBy: userEmail || ''
       };
-      
+      const token = await getToken();
       // Create the emergency request
-      const newEmergency = await createEmergencyRequest({name:emergencyWithEmail.name,contactName:emergencyWithEmail.contactName, contactPhone:emergencyWithEmail.contactPhone,location:emergencyWithEmail.location, urgencyLevel:emergencyWithEmail.urgencyLevel,hospitalName:emergencyWithEmail.hospitalName, description :emergencyWithEmail.description,userId:onboardingData.data.user.id});
+      const newEmergency = await createEmergencyRequest({name:emergencyWithEmail.name,contactName:emergencyWithEmail.contactName, contactPhone:emergencyWithEmail.contactPhone,location:emergencyWithEmail.location, urgencyLevel:emergencyWithEmail.urgencyLevel,hospitalName:emergencyWithEmail.hospitalName, description :emergencyWithEmail.description,userId:onboardingData.data.user.id},token);
+      if(!newEmergency){
+        // setIsModalOpen(false)
+        toast.error('Failed to create emergency request. Please try again.');
+        return
+      }else{
+        // optimistic update
+        addEmergency(newEmergency);
+        
+        // Invalidate the emergencies query to refresh the dashboard
+        queryClient.invalidateQueries({ queryKey: ['emergencies'] });
+        
+        setIsModalOpen(false);
+      }
       
-      // optimistic update
-      addEmergency(newEmergency);
-      
-      // Invalidate the emergencies query to refresh the dashboard
-      queryClient.invalidateQueries({ queryKey: ['emergencies'] });
-      
-      setIsModalOpen(false);
     } catch (error) {
       console.error('Error creating emergency request:', error);
     }
