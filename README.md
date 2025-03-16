@@ -6,9 +6,10 @@ Med Connect is a life-saving application that helps users find the nearest medic
 - Med Connect is a comprehensive web-based platform designed to address the critical need for real-time coordination between patients, hospitals, and volunteers during medical emergencies. The application provides users with the ability to quickly locate available medical resources, such as hospital beds and blood banks and seek help from the community, ensuring timely assistance when it matters most.
 
 # Demo video Link
-- https://www.youtube.com/"yet to upload"
+- https://youtu.be/z5abXZC3EIQ 
+
 ### Key Technologies Used
-- **Frontend**: React.js, Tailwind CSS, Tanstack Query
+- **Frontend**: React.js, Tailwind CSS, Tanstack Query 
 - **Backend**: Hono.js (high-performance web framework), PostgreSQL (managed via Prisma ORM)
 - **Hosting**: Cloudflare Pages 
 - **Real-Time Notifications**: Socket.io for real-time updates (yet to be implemented)
