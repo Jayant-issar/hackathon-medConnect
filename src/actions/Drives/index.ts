@@ -30,7 +30,7 @@ export async function getDrives(): Promise<Drive[]> {
       spots: 40,
       registered: 18,
       urgentTypes: ["A+", "AB-"],
-      image: "https://images.unsplash.com/photo-1563220377-0f2f64e9f532?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      image: "https://www.eventbrite.com/blog/wp-content/uploads/2022/04/hospital-event-promotion-768x351.jpg",
     },
     {
       id: 3,
@@ -44,7 +44,7 @@ export async function getDrives(): Promise<Drive[]> {
       spots: 100,
       registered: 75,
       urgentTypes: ["O-", "A-"],
-      image: "https://images.unsplash.com/photo-1551601651-024f485d7713?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      image: "https://kmihealthcare.com/system/articles/featured_photos/22/7/2.jpg",
     },
     {
       id: 4,
@@ -58,7 +58,7 @@ export async function getDrives(): Promise<Drive[]> {
       spots: 60,
       registered: 42,
       urgentTypes: ["B-", "AB+"],
-      image: "https://images.unsplash.com/photo-1600077093152-112d3f7896f6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      image: "https://www.capgemini.com/wp-content/uploads/2021/04/Capgemini-Healthcare-hero-banner.jpg",
     },
     {
       id: 5,
@@ -72,7 +72,7 @@ export async function getDrives(): Promise<Drive[]> {
       spots: 45,
       registered: 29,
       urgentTypes: ["O+", "A-"],
-      image: "https://images.unsplash.com/photo-1587329310679-9bdb432f357b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      image: "https://storage.googleapis.com/blogs-images-new/ciscoblogs/1/2024/05/GettyImages-1147479249-Use-in-Perpetuity-Cisco-Partner-Premium-Access-RF-%E2%80%93-Full-Service-770x533.jpg",
     },
     {
       id: 6,
@@ -86,7 +86,7 @@ export async function getDrives(): Promise<Drive[]> {
       spots: 30,
       registered: 21,
       urgentTypes: ["B+", "AB-"],
-      image: "https://images.unsplash.com/photo-1618841704935-d5a8ff7d4788?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      image: "https://economymiddleeast.com/cdn-cgi/imagedelivery/Xfg_b7GtigYi5mxeAzkt9w/economymiddleeast.com/2024/09/saudi-global-health-exhibition-1.jpg/w=1200,h=800",
     },
     {
       id: 7,
@@ -100,7 +100,7 @@ export async function getDrives(): Promise<Drive[]> {
       spots: 80,
       registered: 65,
       urgentTypes: ["A+", "O-"],
-      image: "https://images.unsplash.com/photo-1576765608436-3e783f8be170?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      image: "https://eithealth.eu/wp-content/uploads/2019/08/Sparking-ideas-for-healthcare-solutions-in-areas-of-%E2%80%98Bringing-Care-Home%E2%80%99-and-%E2%80%98Real-world-Data%E2%80%99.jpg",
     },
     {
       id: 8,
@@ -114,7 +114,7 @@ export async function getDrives(): Promise<Drive[]> {
       spots: 25,
       registered: 10,
       urgentTypes: ["AB-", "B-"],
-      image: "https://images.unsplash.com/photo-1562059390-a761a0847682?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      image: "https://lirp.cdn-website.com/69c0b277/dms3rep/multi/opt/world+blood+donation+day+-+PACE+hospitals-640w.jpg",
     },
     {
       id: 9,
@@ -128,7 +128,7 @@ export async function getDrives(): Promise<Drive[]> {
       spots: 70,
       registered: 50,
       urgentTypes: ["O+", "A+"],
-      image: "https://images.unsplash.com/photo-1517638851339-4c84bfa00b7f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      image: "https://www.healthcareradius.in/cloud/2021/11/15/Medica-pic.jpg",
     },
     {
       id: 10,
@@ -142,7 +142,7 @@ export async function getDrives(): Promise<Drive[]> {
       spots: 100,
       registered: 90,
       urgentTypes: ["O-", "AB+"],
-      image: "https://images.unsplash.com/photo-1615921524429-1d4e9bb704e3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq3pNnZrZXctDOH0BWWh6XREq6QyrVYqOzmQ&s",
     },
   ];
   
